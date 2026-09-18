@@ -1,31 +1,68 @@
 # Clases
 
-Las clases permiten crear nuestros propios tipos de objetos.
-
-Un objeto puede agrupar datos y acciones. Por ejemplo, una inversión puede guardar capital, tasa y periodos, y además calcular su capital final.
+Las clases permiten crear tipos de objetos propios. Un objeto agrupa datos y acciones; por ejemplo, una inversión puede guardar su capital y tasa, además de calcular su capital final.
 
 ## Objetivos
 
-- Entender qué es una clase y qué es un objeto.
-- Crear atributos para guardar estado.
-- Crear métodos para definir comportamiento.
-- Modelar una inversión simple usando programación orientada a objetos.
+- Entender la diferencia entre una clase y un objeto.
+- Inicializar objetos con `__init__`.
+- Guardar información en atributos.
+- Definir comportamiento mediante métodos.
+- Modelar una inversión simple.
 
 ## Conceptos clave
 
-Una clase es una plantilla para crear objetos. Define qué datos tendrá un objeto y qué acciones podrá realizar.
+| Concepto | Descripción |
+|----------|-------------|
+| Clase | Plantilla que define datos y comportamientos |
+| Objeto | Instancia concreta de una clase |
+| Atributo | Dato asociado a un objeto |
+| Método | Función definida dentro de una clase |
+| `self` | Referencia al objeto actual |
 
-Un objeto es una instancia concreta de una clase. Si `Inversion` es la clase, `inversion = Inversion(...)` crea una inversión específica.
+## 1. Definir una clase
 
-Los atributos son datos asociados al objeto. En este ejemplo, cada inversión tiene `nombre`, `capital_inicial` y `tasa_anual`.
+Una clase se define con la palabra `class`. Por convención, su nombre comienza con mayúscula:
 
-Los métodos son funciones dentro de una clase. Representan acciones o cálculos que el objeto sabe hacer.
+```python
+class Inversion:
+    pass
+```
 
-El método `__init__` se ejecuta cuando se crea el objeto. Se usa para inicializar sus atributos.
+`pass` indica que el bloque está vacío y evita un error de sintaxis. Una clase se convierte en objeto al llamarla:
 
-`self` representa al objeto actual. Permite acceder a sus atributos y métodos desde dentro de la clase.
+```python
+inversion = Inversion()
 
-## Código
+print(type(inversion))
+```
+
+`Inversion` es la clase e `inversion` es un objeto creado a partir de ella.
+
+## 2. Init y atributos
+
+El método `__init__` se ejecuta automáticamente al crear un objeto. Se utiliza para guardar su estado inicial:
+
+```python
+class Inversion:
+    def __init__(self, nombre, capital_inicial, tasa_anual):
+        self.nombre = nombre
+        self.capital_inicial = capital_inicial
+        self.tasa_anual = tasa_anual
+
+
+inversion = Inversion("Fondo balanceado", 1000, 0.06)
+
+print(inversion.nombre)
+print(inversion.capital_inicial)
+print(inversion.tasa_anual)
+```
+
+`self.nombre`, `self.capital_inicial` y `self.tasa_anual` son atributos. Cada objeto mantiene sus propios valores.
+
+## 3. Métodos
+
+Un método es una función dentro de una clase. Su primer parámetro es `self`:
 
 ```python
 class Inversion:
@@ -41,36 +78,69 @@ class Inversion:
         print("Inversión:", self.nombre)
         print("Capital inicial:", self.capital_inicial)
         print("Tasa anual:", self.tasa_anual)
+```
 
+Los métodos se llaman desde el objeto:
 
+```python
 inversion = Inversion("Fondo balanceado", 1000, 0.06)
 
 inversion.resumen()
-
 resultado = inversion.capital_final(5)
-print("Capital final a 5 años:", round(resultado, 2))
+
+print("Capital final:", round(resultado, 2))
 ```
 
-## Explicación del código
+Python entrega automáticamente el objeto como `self`. Por eso solo se proporciona el argumento `5` al llamar `capital_final()`.
 
-La clase `Inversion` define una estructura para representar una inversión. Al crear una inversión, entregamos nombre, capital inicial y tasa anual.
+## 4. Crear varios objetos
 
-El método `capital_final()` recibe la cantidad de años y calcula el capital final usando interés compuesto.
+Una clase puede utilizarse para crear objetos independientes:
 
-El método `resumen()` imprime los datos principales de la inversión. No devuelve un valor, solo muestra información en pantalla.
+```python
+inversion_conservadora = Inversion("Fondo conservador", 1000, 0.03)
+inversion_agresiva = Inversion("Fondo agresivo", 2000, 0.09)
 
-Cuando ejecutamos `inversion = Inversion("Fondo balanceado", 1000, 0.06)`, Python crea un objeto con esos datos. Luego podemos pedirle al objeto que muestre su resumen o calcule su capital final.
+print(inversion_conservadora.capital_final(5))
+print(inversion_agresiva.capital_final(5))
+```
 
-## Errores comunes
+Cambiar un atributo de un objeto no modifica los demás:
 
-- Olvidar `self` en los métodos de la clase.
-- Confundir clase con objeto.
-- Intentar usar un atributo que no fue definido en `__init__`.
+```python
+inversion_conservadora.capital_inicial = 1500
+
+print(inversion_conservadora.capital_inicial)
+print(inversion_agresiva.capital_inicial)
+```
+
+## 5. Modificar el estado
+
+Un método también puede modificar atributos:
+
+```python
+class CuentaInversion:
+    def __init__(self, titular, saldo=0):
+        self.titular = titular
+        self.saldo = saldo
+
+    def depositar(self, monto):
+        if monto > 0:
+            self.saldo = self.saldo + monto
+
+
+cuenta = CuentaInversion("Michael Scott", 1000)
+cuenta.depositar(500)
+
+print(cuenta.saldo)
+```
+
+El objeto conserva el nuevo saldo después de ejecutar `depositar()`.
+
+## 6. Errores comunes
+
+- Olvidar `self` como primer parámetro de un método.
+- Confundir la clase con uno de sus objetos.
+- Intentar usar un atributo que no fue inicializado.
 - Llamar un método sin paréntesis.
-
-## Ejercicios
-
-1. Crea otra inversión con distinto capital y tasa.
-2. Agrega un atributo `moneda`.
-3. Agrega un método que calcule la ganancia final.
-4. Modifica `resumen()` para mostrar la moneda de la inversión.
+- Escribir un nombre de clase en minúscula, en contra de la convención de Python.

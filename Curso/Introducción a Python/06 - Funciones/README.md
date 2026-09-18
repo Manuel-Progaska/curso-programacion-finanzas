@@ -1,27 +1,67 @@
 # Funciones
 
-Las funciones permiten organizar código en bloques reutilizables.
-
-En programación financiera son útiles para encapsular cálculos como rentabilidad, interés compuesto o valorización de instrumentos.
+Las funciones permiten organizar instrucciones en bloques reutilizables. En finanzas sirven para encapsular cálculos como rentabilidad, interés compuesto o valorización de posiciones.
 
 ## Objetivos
 
-- Definir funciones con `def`.
-- Usar parámetros para entregar datos a una función.
-- Usar `return` para devolver resultados.
-- Evitar repetir código en cálculos financieros.
+- Definir y llamar funciones.
+- Entregar información mediante parámetros.
+- Devolver resultados con `return`.
+- Usar parámetros con valores predeterminados.
+- Dividir un problema en cálculos reutilizables.
 
 ## Conceptos clave
 
-Una función es un bloque de código con nombre. Se define una vez y puede usarse muchas veces.
+| Elemento | Función |
+|----------|---------|
+| `def` | Inicia la definición de una función |
+| Parámetro | Variable que la función espera recibir |
+| Argumento | Valor entregado al llamar la función |
+| `return` | Devuelve un resultado |
 
-Los parámetros son variables que la función recibe para trabajar. Por ejemplo, una función de rentabilidad necesita un precio inicial y un precio final.
+## 1. Definir y llamar una función
 
-`return` indica el resultado que la función entrega. Esto permite guardar el resultado en una variable, imprimirlo o usarlo en otro cálculo.
+Una función se define con `def`, un nombre, paréntesis y dos puntos:
 
-Usar funciones ayuda a escribir programas más claros. Si una fórmula financiera se repite muchas veces, conviene convertirla en función.
+```python
+def mostrar_bienvenida():
+    print("Bienvenido al sistema financiero")
 
-## Código
+
+mostrar_bienvenida()
+```
+
+Definir la función no ejecuta su contenido. Para ejecutarla se debe llamar usando su nombre y paréntesis.
+
+## 2. Parámetros y argumentos
+
+Los parámetros permiten que una misma función trabaje con datos distintos:
+
+```python
+def calcular_valor_posicion(precio, cantidad):
+    valor = precio * cantidad
+    print("Valor de la posición:", valor)
+
+
+calcular_valor_posicion(125.75, 10)
+calcular_valor_posicion(80.50, 5)
+```
+
+`precio` y `cantidad` son parámetros. `125.75` y `10` son los argumentos de la primera llamada.
+
+### 2.1 Argumentos por nombre
+
+También se puede indicar a qué parámetro corresponde cada argumento:
+
+```python
+calcular_valor_posicion(cantidad=10, precio=125.75)
+```
+
+Esto mejora la claridad y permite cambiar el orden de los argumentos.
+
+## 3. Return: devolver un resultado
+
+`return` entrega un valor que puede guardarse o usarse en otro cálculo:
 
 ```python
 def calcular_rentabilidad(precio_inicial, precio_final):
@@ -29,41 +69,56 @@ def calcular_rentabilidad(precio_inicial, precio_final):
     return rentabilidad
 
 
-def calcular_capital_final(capital_inicial, tasa, periodos):
-    capital = capital_inicial * (1 + tasa) ** periodos
-    return capital
-
-
-precio_inicial = 100
-precio_final = 115
-
-rentabilidad = calcular_rentabilidad(precio_inicial, precio_final)
-print("Rentabilidad:", rentabilidad)
-
-capital_final = calcular_capital_final(1000, 0.05, 5)
-print("Capital final:", round(capital_final, 2))
+resultado = calcular_rentabilidad(100, 115)
+print("Rentabilidad:", resultado)
 ```
 
-## Explicación del código
+No se debe confundir `print()` con `return`: `print()` muestra información y `return` la devuelve. Cuando se ejecuta `return`, la función termina.
 
-`calcular_rentabilidad()` recibe dos precios. La fórmula `(precio_final - precio_inicial) / precio_inicial` calcula la variación porcentual entre ambos.
+## 4. Parámetros predeterminados
 
-`calcular_capital_final()` aplica interés compuesto. La expresión `(1 + tasa) ** periodos` eleva el factor de crecimiento al número de periodos.
+Un parámetro puede tener un valor que se usa cuando no se entrega otro:
 
-Después de definir las funciones, las llamamos con valores concretos. El resultado de cada llamada se guarda en una variable y luego se imprime.
+```python
+def calcular_comision(monto, tasa=0.01):
+    return monto * tasa
 
-Separar el cálculo en funciones hace que el código sea más fácil de probar. Si mañana queremos calcular rentabilidad para otro activo, no necesitamos escribir la fórmula otra vez.
 
-## Errores comunes
+print(calcular_comision(1000))
+print(calcular_comision(1000, 0.005))
+```
 
-- Olvidar los paréntesis al llamar una función.
-- Confundir `print()` con `return`. `print()` muestra, `return` devuelve.
-- Definir una función pero nunca llamarla.
-- Entregar los parámetros en un orden incorrecto.
+Los parámetros sin valor predeterminado deben escribirse antes que aquellos que sí lo tienen.
 
-## Ejercicios
+## 5. Documentar una función
 
-1. Crea una función que calcule la ganancia absoluta: `precio_final - precio_inicial`.
-2. Crea una función que calcule el valor de una posición: `precio * cantidad`.
-3. Llama `calcular_capital_final()` con distintos periodos.
-4. Modifica la función de rentabilidad para imprimir el resultado como porcentaje.
+Un `docstring` explica qué hace una función:
+
+```python
+def calcular_capital_final(capital_inicial, tasa, periodos):
+    """Calcula el capital final usando interés compuesto."""
+    return capital_inicial * (1 + tasa) ** periodos
+
+
+capital_final = calcular_capital_final(1000, 0.05, 5)
+print(round(capital_final, 2))
+```
+
+## 6. Alcance de las variables
+
+Una variable creada dentro de una función es local y normalmente solo existe dentro de ella:
+
+```python
+def calcular_ganancia(precio_inicial, precio_final):
+    ganancia = precio_final - precio_inicial
+    return ganancia
+
+
+resultado = calcular_ganancia(100, 115)
+print(resultado)
+
+# Esto produce un error fuera de la función:
+# print(ganancia)
+```
+
+Conviene que las funciones reciban la información mediante parámetros y devuelvan resultados, en lugar de depender de variables externas.

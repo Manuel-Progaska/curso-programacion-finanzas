@@ -1,83 +1,130 @@
 # Condicionales
 
-Los condicionales permiten que un programa tome decisiones.
-
-Con `if`, `elif` y `else` podemos ejecutar distintos bloques de código según una condición.
+Los condicionales permiten que un programa tome decisiones. Con `if`, `elif` y `else` podemos ejecutar distintos bloques de código según una condición.
 
 ## Objetivos
 
 - Construir reglas de decisión con `if`, `elif` y `else`.
-- Usar operadores de comparación.
-- Combinar condiciones con operadores lógicos.
-- Aplicar reglas simples a casos financieros.
+- Usar operadores de comparación y operadores lógicos.
+- Entender la importancia de la indentación.
+- Aplicar reglas de decisión a ejemplos financieros.
 
 ## Conceptos clave
 
-Una condición es una expresión que se evalúa como verdadera o falsa. Por ejemplo, `rentabilidad > 0` pregunta si la rentabilidad es positiva.
+| Palabra | Función |
+|---------|---------|
+| `if` | Evalúa la primera condición |
+| `elif` | Evalúa otra condición si las anteriores fueron falsas |
+| `else` | Se ejecuta si ninguna condición anterior fue verdadera |
 
-Python ejecuta el bloque indentado debajo de la primera condición verdadera. La indentación no es decoración: define qué instrucciones pertenecen a cada bloque.
+Una condición produce un valor `True` o `False`. Python ejecuta solamente el primer bloque cuya condición sea verdadera.
 
-Los operadores de comparación más comunes son:
+## 1. If: primera condición
 
-- `>` mayor que.
-- `<` menor que.
-- `>=` mayor o igual que.
-- `<=` menor o igual que.
-- `==` igual a.
-- `!=` distinto de.
-
-Los operadores lógicos permiten combinar condiciones:
-
-- `and`: ambas condiciones deben ser verdaderas.
-- `or`: al menos una condición debe ser verdadera.
-- `not`: invierte una condición.
-
-## Código
+La sentencia `if` ejecuta un bloque cuando su condición es verdadera:
 
 ```python
 rentabilidad = 0.08
-riesgo = "medio"
+
+if rentabilidad > 0:
+    print("La inversión obtuvo una ganancia")
+```
+
+Los dos puntos (`:`) y la indentación son obligatorios. Las instrucciones indentadas pertenecen al condicional.
+
+## 2. Else: alternativa
+
+`else` permite definir qué hacer cuando la condición del `if` es falsa:
+
+```python
+saldo = 800
+monto_inversion = 1000
+
+if saldo >= monto_inversion:
+    print("La compra puede realizarse")
+else:
+    print("Saldo insuficiente")
+```
+
+`else` no lleva condición, porque representa todos los casos restantes.
+
+## 3. Elif: múltiples alternativas
+
+`elif` permite evaluar varias condiciones en orden:
+
+```python
+rentabilidad = 0.08
 
 if rentabilidad > 0.10:
     print("Rentabilidad alta")
 elif rentabilidad > 0:
     print("Rentabilidad positiva")
+elif rentabilidad == 0:
+    print("Sin variación")
 else:
     print("Rentabilidad negativa")
-
-if riesgo == "bajo":
-    print("Perfil conservador")
-elif riesgo == "medio":
-    print("Perfil balanceado")
-else:
-    print("Perfil agresivo")
-
-monto_inversion = 5000
-
-if monto_inversion >= 1000 and rentabilidad > 0:
-    print("La inversión cumple las condiciones mínimas")
-else:
-    print("La inversión no cumple las condiciones mínimas")
 ```
 
-## Explicación del código
+En este ejemplo se imprime `"Rentabilidad positiva"`. Aunque una condición posterior también pudiera cumplirse, Python deja de evaluar cuando encuentra la primera verdadera.
 
-Primero se evalúa la rentabilidad. Si es mayor a `0.10`, se considera alta. Si no cumple esa condición, Python revisa si es mayor que `0`. Si tampoco cumple, cae en el bloque `else`.
+## 4. Operadores de comparación
 
-Luego se clasifica el riesgo según el texto guardado en la variable `riesgo`. El operador `==` compara igualdad. En este caso, `"medio"` produce el mensaje `"Perfil balanceado"`.
+| Operador | Significado |
+|----------|-------------|
+| `==` | Igual a |
+| `!=` | Distinto de |
+| `<` | Menor que |
+| `>` | Mayor que |
+| `<=` | Menor o igual que |
+| `>=` | Mayor o igual que |
 
-Finalmente se evalúan dos condiciones al mismo tiempo: que el monto sea al menos `1000` y que la rentabilidad sea positiva. Como se usa `and`, ambas deben cumplirse para imprimir que la inversión cumple las condiciones mínimas.
+```python
+precio = 125.75
+precio_objetivo = 130
 
-## Errores comunes
+print(precio < precio_objetivo)
+print(precio == precio_objetivo)
+```
 
-- Usar `=` cuando se quiere comparar. Para comparar se usa `==`.
-- Olvidar los dos puntos `:` después de `if`, `elif` o `else`.
-- Escribir mal la indentación del bloque.
-- Comparar texto con mayúsculas o espacios distintos.
+No se debe confundir `==`, que compara valores, con `=`, que asigna un valor a una variable.
 
-## Ejercicios
+## 5. Operadores lógicos
 
-1. Cambia la rentabilidad a `-0.03` y observa el resultado.
-2. Cambia el riesgo a `"alto"`.
-3. Agrega una condición para rechazar inversiones con monto menor a `500`.
-4. Crea una regla que clasifique una inversión como atractiva si tiene rentabilidad mayor a `0.07` o riesgo bajo.
+Los operadores lógicos combinan o invierten condiciones:
+
+```python
+monto_inversion = 5000
+rentabilidad = 0.08
+activo_bloqueado = False
+
+cumple_minimos = monto_inversion >= 1000 and rentabilidad > 0
+requiere_revision = rentabilidad > 0.15 or activo_bloqueado
+puede_operar = not activo_bloqueado
+
+print(cumple_minimos)
+print(requiere_revision)
+print(puede_operar)
+```
+
+- `and` exige que ambas condiciones sean verdaderas.
+- `or` exige que al menos una condición sea verdadera.
+- `not` invierte el resultado de una condición.
+
+## 6. Condicionales anidados
+
+Un condicional puede contener otro condicional:
+
+```python
+mercado_abierto = True
+saldo_suficiente = True
+
+if mercado_abierto:
+    if saldo_suficiente:
+        print("Orden enviada")
+    else:
+        print("Saldo insuficiente")
+else:
+    print("Mercado cerrado")
+```
+
+Cuando sea posible, los operadores lógicos ayudan a evitar demasiados niveles de anidación.

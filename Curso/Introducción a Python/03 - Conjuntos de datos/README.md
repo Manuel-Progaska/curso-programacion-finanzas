@@ -1,77 +1,153 @@
 # Conjuntos de datos
 
-Los conjuntos de datos permiten guardar varios valores en una misma variable.
-
-En Python usaremos listas, tuplas, diccionarios y conjuntos para organizar información financiera como precios, activos y portafolios.
+Los conjuntos de datos permiten guardar varios valores en una misma variable. En Python podemos usar listas, tuplas, diccionarios y conjuntos para organizar precios, activos y portafolios.
 
 ## Objetivos
 
-- Entender cuándo usar listas, tuplas, diccionarios y conjuntos.
-- Acceder a elementos dentro de una colección.
-- Actualizar información guardada en un diccionario.
-- Reconocer estructuras útiles para datos financieros.
+- Reconocer las principales colecciones de Python.
+- Acceder, agregar, modificar y eliminar elementos.
+- Elegir la colección adecuada según el problema.
+- Aplicar colecciones a ejemplos financieros simples.
 
 ## Conceptos clave
 
-Una lista guarda varios elementos en orden y puede modificarse. Es útil para precios históricos, retornos diarios o montos de transacciones.
+| Tipo | Característica | ¿Se puede modificar? | Ejemplo |
+|------|----------------|-----------------------|---------|
+| `list` | Elementos ordenados | Sí | `[100.5, 101.2]` |
+| `tuple` | Elementos ordenados | No | `("AAPL", "NASDAQ")` |
+| `dict` | Pares clave-valor | Sí | `{"AAPL": 10}` |
+| `set` | Elementos únicos | Sí | `{"NYSE", "NASDAQ"}` |
 
-Una tupla también guarda elementos en orden, pero normalmente se usa para datos que no deberían cambiar, como la descripción básica de un activo.
+## 1. List: listas
 
-Un diccionario guarda pares `clave: valor`. Es muy útil cuando queremos asociar un identificador con un dato, por ejemplo ticker y cantidad de acciones.
+Una `list` guarda elementos en orden. Puede contener distintos tipos de datos y puede modificarse después de ser creada.
 
-Un conjunto guarda valores únicos. Si se repite un elemento, Python lo conserva solo una vez. Esto sirve para eliminar duplicados.
-
-## Código
+### 1.1 Definir y consultar una lista
 
 ```python
 precios = [100.5, 101.2, 99.8, 102.4]
+
+print(precios)
+print(precios[0])   # Primer elemento
+print(precios[-1])  # Último elemento
+print(len(precios))
+```
+
+Python comienza a contar las posiciones desde `0`. Intentar acceder a una posición inexistente produce un `IndexError`.
+
+### 1.2 Modificar una lista
+
+```python
+precios = [100.5, 101.2, 99.8]
+
+precios.append(102.4)
+precios[0] = 100.8
+precios.remove(99.8)
+
+print(precios)
+```
+
+`append()` agrega un elemento al final, `remove()` elimina la primera coincidencia y `pop()` elimina un elemento según su posición.
+
+### 1.3 Operaciones útiles
+
+```python
+precios = [100.5, 101.2, 99.8, 102.4]
+
+print("Mínimo:", min(precios))
+print("Máximo:", max(precios))
+print("Suma:", sum(precios))
+print("Promedio:", sum(precios) / len(precios))
+```
+
+## 2. Tuple: tuplas
+
+Una `tuple` también guarda elementos en orden, pero no puede modificarse después de su creación. Es útil para datos que deberían permanecer fijos.
+
+```python
 activo = ("AAPL", "Acción", "NASDAQ")
+
+print("Ticker:", activo[0])
+print("Tipo:", activo[1])
+print("Mercado:", activo[2])
+```
+
+Los valores se pueden desempaquetar en variables:
+
+```python
+ticker, tipo, mercado = activo
+print(ticker, tipo, mercado)
+```
+
+La instrucción `activo[0] = "MSFT"` produciría un `TypeError`, porque las tuplas son inmutables.
+
+## 3. Dict: diccionarios
+
+Un `dict` relaciona claves con valores. Las claves no se repiten y permiten buscar información sin conocer su posición.
+
+### 3.1 Definir y consultar un diccionario
+
+```python
 portafolio = {
     "AAPL": 10,
     "MSFT": 5,
     "TSLA": 2,
 }
-mercados = {"NYSE", "NASDAQ", "SSE", "NASDAQ"}
 
-print("Precios:", precios)
-print("Primer precio:", precios[0])
-print("Último precio:", precios[-1])
-
-print("Activo:", activo)
-print("Ticker:", activo[0])
-
-print("Portafolio:", portafolio)
-print("Acciones de AAPL:", portafolio["AAPL"])
-
-portafolio["AAPL"] = 12
-portafolio["GOOG"] = 1
-
-print("Portafolio actualizado:", portafolio)
-print("Mercados únicos:", mercados)
+print(portafolio["AAPL"])
+print(portafolio.get("GOOG", 0))
 ```
 
-## Explicación del código
+Los corchetes producen un `KeyError` si la clave no existe. El método `get()` permite indicar un valor alternativo.
 
-`precios` es una lista con cuatro precios. Se accede al primer elemento con `precios[0]` porque Python cuenta desde cero. El último elemento se puede obtener con `precios[-1]`.
+### 3.2 Agregar, modificar y eliminar
 
-`activo` es una tupla que guarda información fija: ticker, tipo de instrumento y mercado. Para obtener el ticker usamos `activo[0]`.
+```python
+portafolio["AAPL"] = 12
+portafolio["GOOG"] = 1
+del portafolio["TSLA"]
 
-`portafolio` es un diccionario. Sus claves son tickers y sus valores son cantidades. `portafolio["AAPL"]` devuelve la cantidad asociada a `AAPL`.
+print(portafolio)
+```
 
-Luego actualizamos el diccionario: cambiamos la cantidad de `AAPL` y agregamos `GOOG`.
+También podemos consultar sus componentes:
 
-`mercados` es un conjunto. Aunque `NASDAQ` aparece dos veces al crearlo, el conjunto final lo guarda una sola vez.
+```python
+print(portafolio.keys())
+print(portafolio.values())
+print(portafolio.items())
+```
 
-## Errores comunes
+## 4. Set: conjuntos
 
-- Intentar acceder a una posición que no existe en una lista.
-- Olvidar que los índices comienzan en `0`.
-- Buscar una clave que no existe en un diccionario.
-- Esperar que un conjunto mantenga elementos repetidos.
+Un `set` guarda elementos únicos y no garantiza un orden. Es útil para eliminar duplicados o comprobar pertenencia.
 
-## Ejercicios
+```python
+mercados = {"NYSE", "NASDAQ", "SSE", "NASDAQ"}
 
-1. Agrega un nuevo precio a la lista `precios`.
-2. Crea un diccionario con precios por ticker.
-3. Calcula manualmente el valor de una posición usando cantidad y precio.
-4. Agrega un mercado repetido al conjunto y observa el resultado.
+mercados.add("LSE")
+mercados.discard("SSE")
+
+print(mercados)
+print("NASDAQ" in mercados)
+```
+
+Aunque `"NASDAQ"` aparece dos veces al crear el conjunto, se almacena una sola vez. `discard()` no produce error si el elemento no existe.
+
+### 4.1 Operaciones entre conjuntos
+
+```python
+mercados_portafolio = {"NYSE", "NASDAQ"}
+mercados_disponibles = {"NASDAQ", "LSE", "SSE"}
+
+print(mercados_portafolio & mercados_disponibles)  # Intersección
+print(mercados_portafolio | mercados_disponibles)  # Unión
+print(mercados_portafolio - mercados_disponibles)  # Diferencia
+```
+
+## 5. Elegir una colección
+
+- Usa una lista cuando importe el orden y los valores puedan cambiar.
+- Usa una tupla cuando importe el orden y los valores deban permanecer fijos.
+- Usa un diccionario cuando necesites relacionar una clave con un valor.
+- Usa un conjunto cuando necesites valores únicos y el orden no sea importante.

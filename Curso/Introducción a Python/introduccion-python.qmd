@@ -1,0 +1,939 @@
+---
+title: "Introducción a Python"
+subtitle: "Fundamentos de programación aplicados a finanzas"
+lang: es
+format:
+  live-revealjs:
+    theme: simple
+    slide-number: true
+    progress: true
+    history: true
+    transition: slide
+    navigation-mode: linear
+    code-overflow: wrap
+    code-line-numbers: false
+    center: false
+    footer: "Programación en Finanzas"
+pyodide:
+  cell-options:
+    edit: true
+    runbutton: true
+    startover: true
+    autorun: false
+    max-lines: 14
+---
+
+## Propósito del módulo
+
+Este módulo introduce los fundamentos de programación con Python desde cero, usando ejemplos vinculados al mundo financiero.
+
+La meta no es memorizar sintaxis, sino aprender a pensar en términos de:
+
+- instrucciones;
+- datos;
+- decisiones;
+- repetición;
+- organización del código.
+
+Estos fundamentos serán la base para trabajar con análisis de datos, modelos financieros, automatización y librerías como `pandas` y `numpy`.
+
+## Cómo usar el material
+
+Cada unidad contiene:
+
+- un `README.md` con explicaciones y ejemplos;
+- un `main.py` con código ejecutable.
+
+Flujo de estudio recomendado:
+
+1. Leer la explicación.
+2. Revisar el código.
+3. Ejecutar `main.py`.
+4. Modificar valores y observar los resultados.
+5. Crear ejemplos propios.
+
+## Contenidos
+
+1. Hola mundo
+2. Tipos de datos
+3. Conjuntos de datos
+4. Condicionales
+5. Bucles
+6. Funciones
+7. Clases
+
+# 1. Hola mundo
+
+## Objetivos
+
+- Ejecutar un programa simple en Python.
+- Usar `print()` para mostrar información.
+- Crear y modificar variables.
+- Comprender cómo Python ejecuta un script.
+
+## Scripts y terminal
+
+Un **script** es un archivo que contiene instrucciones de Python. Su extensión es `.py`, por ejemplo, `main.py`.
+
+El intérprete ejecuta las instrucciones desde la primera línea hasta la última.
+
+```bash
+# Windows
+python main.py
+
+# macOS y Linux
+python3 main.py
+```
+
+La **terminal** permite escribir comandos y ejecutar el intérprete.
+
+## Mostrar información con print
+
+La función `print()` muestra texto, variables y resultados en la terminal:
+
+```{pyodide}
+print("Hola mundo")
+print("Bienvenidos al curso Programación en Finanzas")
+
+precio = 125.75
+print("Precio:", precio)
+```
+
+Los textos se escriben entre comillas. Los nombres de variables se escriben sin comillas.
+
+## Variables
+
+Una variable guarda un valor con un nombre:
+
+```{pyodide}
+nombre = "John"
+apellido = "Smith"
+
+print("Hola", nombre, apellido)
+```
+
+Una variable puede redefinirse:
+
+```{pyodide}
+nombre = "Michael"
+print(nombre)
+
+nombre = "Jim"
+print(nombre)
+```
+
+Al redefinirla, el valor anterior es reemplazado.
+
+# 2. Tipos de datos
+
+## Objetivos
+
+- Reconocer los tipos básicos de Python.
+- Usar texto, enteros, decimales y booleanos.
+- Distinguir un número de un texto que parece número.
+- Convertir valores cuando sea necesario.
+
+## Tipos básicos
+
+| Tipo | Uso | Ejemplo |
+|------|-----|---------|
+| `str` | Texto | `"AAPL"` |
+| `int` | Enteros | `10` |
+| `float` | Decimales | `125.75` |
+| `bool` | Valores lógicos | `True` |
+
+La función `type()` permite consultar el tipo:
+
+```{pyodide}
+print(type("AAPL"))
+print(type(10))
+print(type(125.75))
+print(type(True))
+```
+
+## String: texto
+
+Un `str` es una cadena de caracteres:
+
+```{pyodide}
+nombre_cliente = 'Michael'
+apellido_cliente = "Scott"
+
+perfil = """
+Cliente sin experiencia en inversiones,
+con un horizonte de largo plazo.
+"""
+```
+
+Aunque contenga dígitos, un valor entre comillas sigue siendo texto:
+
+```{pyodide}
+precio_texto = "150.25"
+```
+
+## Métodos de string
+
+```{pyodide}
+ticker = "Aapl"
+print(ticker.upper())
+print(ticker.lower())
+
+mensaje = "Precio de Apple"
+print(mensaje.replace("Apple", "AAPL"))
+
+datos = "AAPL,USD,125.75"
+print(datos.split(","))
+
+texto_sucio = "  AAPL  "
+print(texto_sucio.strip())
+```
+
+Formatear texto con un *f-string*:
+
+```{pyodide}
+perfil = "Agresivo"
+mensaje = f"El perfil del cliente es: {perfil}"
+```
+
+## Operaciones con texto
+
+`+` concatena textos:
+
+```{pyodide}
+ticker = "AAPL"
+mercado = "NASDAQ"
+
+descripcion = ticker + " cotiza en " + mercado
+print(descripcion)
+```
+
+`*` repite un texto:
+
+```{pyodide}
+separador = "-" * 30
+print(separador)
+```
+
+Estas operaciones no corresponden a cálculos financieros.
+
+## Integer: números enteros
+
+Un `int` representa un número sin parte decimal:
+
+```{pyodide}
+cantidad_acciones = 10
+periodos = 12
+saldo_puntos = -5
+```
+
+Operaciones:
+
+```{pyodide}
+print(10 + 5)   # Suma
+print(10 - 3)   # Resta
+print(10 * 3)   # Multiplicación
+print(10 / 2)   # División: 5.0
+print(10 // 3)  # División entera: 3
+print(10 % 3)   # Resto: 1
+```
+
+## Convertir a entero
+
+`int()` convierte un valor compatible:
+
+```{pyodide}
+cantidad_texto = "20"
+cantidad = int(cantidad_texto)
+```
+
+Al convertir un decimal, se elimina la parte decimal; no se redondea:
+
+```{pyodide}
+precio = 125.75
+print(int(precio))  # 125
+```
+
+Un texto decimal necesita dos conversiones:
+
+```{pyodide}
+precio_entero = int(float("125.75"))
+```
+
+## Float: números decimales
+
+Un `float` utiliza punto como separador decimal:
+
+```{pyodide}
+precio_accion = 125.75
+tasa_interes = 0.05
+rentabilidad = -0.023
+```
+
+Ejemplo financiero:
+
+```{pyodide}
+cantidad = 10
+valor_posicion = precio_accion * cantidad
+comision = valor_posicion * 0.01
+valor_final = valor_posicion - comision
+```
+
+Combinar un `int` y un `float` normalmente produce un `float`.
+
+## Redondeo y precisión
+
+`round()` redondea a una cantidad de decimales:
+
+```{pyodide}
+capital = 1000
+tasa = 0.01
+periodos = 12
+
+capital_final = capital * (1 + tasa) ** periodos
+print(round(capital_final, 2))
+```
+
+Los `float` pueden presentar pequeñas diferencias de precisión. En aplicaciones monetarias que exijan exactitud se recomienda `Decimal`.
+
+Conversión:
+
+```{pyodide}
+precio = float("150.25")
+
+# Error: contiene caracteres no numéricos
+# float("USD 150.25")
+```
+
+## Bool: verdadero o falso
+
+Un `bool` solo puede ser `True` o `False`:
+
+```{pyodide}
+mercado_abierto = True
+activo_bloqueado = False
+```
+
+Las comparaciones producen booleanos:
+
+```{pyodide}
+precio = 125.75
+objetivo = 130
+
+print(precio < objetivo)   # True
+print(precio == objetivo)  # False
+print(precio != 0)         # True
+```
+
+## Operadores lógicos y conversión
+
+```{pyodide}
+saldo_suficiente = True
+activo_bloqueado = False
+
+puede_comprar = mercado_abierto and saldo_suficiente
+requiere_revision = activo_bloqueado or not saldo_suficiente
+```
+
+- `and`: ambas condiciones deben ser verdaderas.
+- `or`: al menos una debe ser verdadera.
+- `not`: invierte el valor.
+
+```{pyodide}
+bool(0)        # False
+bool(10)       # True
+bool("")       # False
+bool("False")  # True: es texto no vacío
+```
+
+# 3. Conjuntos de datos
+
+## Objetivos y colecciones
+
+- Guardar varios valores.
+- Acceder, agregar, modificar y eliminar elementos.
+- Elegir la colección adecuada.
+
+| Tipo | Ordenado | Modificable | Característica |
+|------|----------|-------------|----------------|
+| `list` | Sí | Sí | Secuencia |
+| `tuple` | Sí | No | Secuencia fija |
+| `dict` | Por inserción | Sí | Clave-valor |
+| `set` | No garantizado | Sí | Valores únicos |
+
+## List: listas
+
+```{pyodide}
+precios = [100.5, 101.2, 99.8, 102.4]
+
+print(precios[0])
+print(precios[-1])
+print(len(precios))
+```
+
+Python cuenta las posiciones desde `0`.
+
+```{pyodide}
+precios.append(103.1)
+precios[0] = 100.8
+precios.remove(99.8)
+```
+
+Acceder a una posición inexistente produce `IndexError`.
+
+## Operaciones con listas
+
+```{pyodide}
+precios = [100.5, 101.2, 99.8, 102.4]
+
+print(min(precios))
+print(max(precios))
+print(sum(precios))
+print(sum(precios) / len(precios))
+```
+
+- `append()` agrega al final.
+- `remove()` elimina la primera coincidencia.
+- `pop()` elimina según la posición.
+
+## Tuple: tuplas
+
+Una tupla es ordenada e inmutable:
+
+```{pyodide}
+activo = ("AAPL", "Acción", "NASDAQ")
+
+print(activo[0])
+
+ticker, tipo, mercado = activo
+print(ticker, tipo, mercado)
+```
+
+No puede modificarse:
+
+```{pyodide}
+# Produce TypeError
+# activo[0] = "MSFT"
+```
+
+## Dict: diccionarios
+
+Un diccionario relaciona claves con valores:
+
+```{pyodide}
+portafolio = {
+    "AAPL": 10,
+    "MSFT": 5,
+    "TSLA": 2,
+}
+
+print(portafolio["AAPL"])
+print(portafolio.get("GOOG", 0))
+```
+
+`get()` permite definir un valor alternativo si la clave no existe.
+
+## Modificar un diccionario
+
+```{pyodide}
+portafolio["AAPL"] = 12
+portafolio["GOOG"] = 1
+del portafolio["TSLA"]
+
+print(portafolio.keys())
+print(portafolio.values())
+print(portafolio.items())
+```
+
+Buscar con corchetes una clave inexistente produce `KeyError`.
+
+## Set: conjuntos
+
+Un conjunto almacena valores únicos:
+
+```{pyodide}
+mercados = {"NYSE", "NASDAQ", "SSE", "NASDAQ"}
+
+mercados.add("LSE")
+mercados.discard("SSE")
+
+print("NASDAQ" in mercados)
+```
+
+Operaciones:
+
+```{pyodide}
+a = {"NYSE", "NASDAQ"}
+b = {"NASDAQ", "LSE", "SSE"}
+
+print(a & b)  # Intersección
+print(a | b)  # Unión
+print(a - b)  # Diferencia
+```
+
+## ¿Qué colección elegir?
+
+- **Lista:** importa el orden y los valores pueden cambiar.
+- **Tupla:** importa el orden y los valores deben permanecer fijos.
+- **Diccionario:** se necesita asociar una clave con un valor.
+- **Conjunto:** se necesitan valores únicos y el orden no importa.
+
+# 4. Condicionales
+
+## Objetivos y estructura
+
+Los condicionales permiten ejecutar distintos bloques según una condición.
+
+| Palabra | Función |
+|---------|---------|
+| `if` | Evalúa la primera condición |
+| `elif` | Evalúa alternativas |
+| `else` | Cubre los casos restantes |
+
+Una condición produce `True` o `False`.
+
+## If y else
+
+```{pyodide}
+saldo = 800
+monto = 1000
+
+if saldo >= monto:
+    print("Compra aprobada")
+else:
+    print("Saldo insuficiente")
+```
+
+Los dos puntos y la indentación son obligatorios. `else` no lleva condición.
+
+## Elif
+
+```{pyodide}
+rentabilidad = 0.08
+
+if rentabilidad > 0.10:
+    print("Rentabilidad alta")
+elif rentabilidad > 0:
+    print("Rentabilidad positiva")
+elif rentabilidad == 0:
+    print("Sin variación")
+else:
+    print("Rentabilidad negativa")
+```
+
+Python ejecuta el primer bloque verdadero y deja de evaluar los siguientes.
+
+## Comparaciones y lógica
+
+Comparaciones: `==`, `!=`, `<`, `>`, `<=`, `>=`.
+
+```{pyodide}
+monto = 5000
+rentabilidad = 0.08
+bloqueado = False
+
+cumple = monto >= 1000 and rentabilidad > 0
+revisar = rentabilidad > 0.15 or bloqueado
+puede_operar = not bloqueado
+```
+
+`=` asigna un valor; `==` compara dos valores.
+
+## Condicionales anidados
+
+```{pyodide}
+mercado_abierto = True
+saldo_suficiente = True
+
+if mercado_abierto:
+    if saldo_suficiente:
+        print("Orden enviada")
+    else:
+        print("Saldo insuficiente")
+else:
+    print("Mercado cerrado")
+```
+
+Los operadores lógicos ayudan a evitar demasiados niveles de anidación.
+
+# 5. Bucles
+
+## Objetivos y elementos
+
+Los bucles repiten instrucciones:
+
+| Elemento | Uso |
+|----------|-----|
+| `for` | Recorre una colección |
+| `range()` | Genera enteros |
+| `while` | Repite según una condición |
+| `break` | Termina el bucle |
+| `continue` | Avanza a la siguiente repetición |
+
+## For
+
+```{pyodide}
+precios = [100, 102, 101, 105, 107]
+
+for precio in precios:
+    print("Precio observado:", precio)
+```
+
+La variable `precio` toma un elemento distinto en cada repetición.
+
+## Acumuladores
+
+```{pyodide}
+precios = [100, 102, 101, 105, 107]
+total = 0
+
+for precio in precios:
+    total = total + precio
+
+promedio = total / len(precios)
+print(promedio)
+```
+
+El acumulador se inicializa antes del bucle y se actualiza en cada repetición.
+
+## Range
+
+El límite final de `range()` no se incluye:
+
+```{pyodide}
+for numero in range(5):
+    print(numero)  # 0 a 4
+
+for periodo in range(1, 6):
+    print(periodo)  # 1 a 5
+
+for numero in range(0, 11, 2):
+    print(numero)  # 0, 2, ..., 10
+```
+
+## Proyección de capital
+
+```{pyodide}
+capital = 1000
+tasa = 0.05
+periodos = 5
+
+for periodo in range(1, periodos + 1):
+    capital = capital * (1 + tasa)
+    print(periodo, round(capital, 2))
+```
+
+`periodos + 1` permite incluir el último periodo.
+
+## While
+
+```{pyodide}
+objetivo = 1500
+capital = 1000
+tasa = 0.05
+periodo = 0
+
+while capital < objetivo:
+    capital = capital * (1 + tasa)
+    periodo = periodo + 1
+
+print(periodo)
+```
+
+La condición debe cambiar para evitar un bucle infinito.
+
+## Break y continue
+
+```{pyodide}
+precios = [100, 102, -1, 105]
+
+for precio in precios:
+    if precio < 0:
+        break
+    print(precio)
+```
+
+```{pyodide}
+rentabilidades = [0.03, None, -0.01]
+
+for rentabilidad in rentabilidades:
+    if rentabilidad is None:
+        continue
+    print(rentabilidad)
+```
+
+## Recorrer diccionarios
+
+`items()` entrega la clave y el valor:
+
+```{pyodide}
+portafolio = {"AAPL": 10, "MSFT": 5, "TSLA": 2}
+
+for ticker, cantidad in portafolio.items():
+    print("Activo:", ticker)
+    print("Cantidad:", cantidad)
+```
+
+# 6. Funciones
+
+## Objetivos y conceptos
+
+Las funciones agrupan instrucciones reutilizables.
+
+| Elemento | Función |
+|----------|---------|
+| `def` | Define una función |
+| Parámetro | Variable que la función espera |
+| Argumento | Valor entregado al llamarla |
+| `return` | Devuelve un resultado |
+
+## Definir y llamar
+
+```{pyodide}
+def mostrar_bienvenida():
+    print("Bienvenido al sistema financiero")
+
+
+mostrar_bienvenida()
+```
+
+Definir una función no ejecuta su contenido. Es necesario llamarla con paréntesis.
+
+## Parámetros y argumentos
+
+```{pyodide}
+def calcular_valor_posicion(precio, cantidad):
+    valor = precio * cantidad
+    print(valor)
+
+
+calcular_valor_posicion(125.75, 10)
+calcular_valor_posicion(precio=80.50, cantidad=5)
+```
+
+Los argumentos por nombre mejoran la claridad y pueden cambiar de orden.
+
+## Return
+
+```{pyodide}
+def calcular_rentabilidad(precio_inicial, precio_final):
+    resultado = (precio_final - precio_inicial) / precio_inicial
+    return resultado
+
+
+rentabilidad = calcular_rentabilidad(100, 115)
+print(rentabilidad)
+```
+
+`print()` muestra información; `return` devuelve un valor. La función termina al ejecutar `return`.
+
+## Parámetros predeterminados
+
+```{pyodide}
+def calcular_comision(monto, tasa=0.01):
+    return monto * tasa
+
+
+print(calcular_comision(1000))
+print(calcular_comision(1000, 0.005))
+```
+
+Los parámetros obligatorios deben escribirse antes de los predeterminados.
+
+## Documentación
+
+Un *docstring* explica el propósito de la función:
+
+```{pyodide}
+def calcular_capital_final(capital, tasa, periodos):
+    """Calcula el capital final con interés compuesto."""
+    return capital * (1 + tasa) ** periodos
+
+
+resultado = calcular_capital_final(1000, 0.05, 5)
+print(round(resultado, 2))
+```
+
+## Alcance
+
+Una variable local solo existe dentro de la función:
+
+```{pyodide}
+def calcular_ganancia(inicial, final):
+    ganancia = final - inicial
+    return ganancia
+
+
+resultado = calcular_ganancia(100, 115)
+
+# Error fuera de la función:
+# print(ganancia)
+```
+
+Conviene recibir datos mediante parámetros y devolver resultados.
+
+# 7. Clases
+
+## Objetivos y conceptos
+
+Las clases permiten crear tipos propios:
+
+| Concepto | Descripción |
+|----------|-------------|
+| Clase | Plantilla de datos y comportamientos |
+| Objeto | Instancia de una clase |
+| Atributo | Dato asociado al objeto |
+| Método | Función dentro de la clase |
+| `self` | Referencia al objeto actual |
+
+## Definir una clase
+
+```{pyodide}
+class Inversion:
+    pass
+
+
+inversion = Inversion()
+print(type(inversion))
+```
+
+Por convención, el nombre de una clase comienza con mayúscula.
+
+## Init y atributos
+
+```{pyodide}
+class Inversion:
+    def __init__(self, nombre, capital, tasa):
+        self.nombre = nombre
+        self.capital_inicial = capital
+        self.tasa_anual = tasa
+
+
+inversion = Inversion("Fondo balanceado", 1000, 0.06)
+print(inversion.nombre)
+```
+
+`__init__` se ejecuta al crear el objeto. Cada objeto conserva sus propios atributos.
+
+## Métodos
+
+```{pyodide}
+class Inversion:
+    def __init__(self, nombre, capital, tasa):
+        self.nombre = nombre
+        self.capital_inicial = capital
+        self.tasa_anual = tasa
+
+    def capital_final(self, años):
+        return self.capital_inicial * (1 + self.tasa_anual) ** años
+
+    def resumen(self):
+        print("Inversión:", self.nombre)
+        print("Capital:", self.capital_inicial)
+```
+
+El primer parámetro de un método es `self`.
+
+## Usar un objeto
+
+```{pyodide}
+inversion = Inversion("Fondo balanceado", 1000, 0.06)
+
+inversion.resumen()
+resultado = inversion.capital_final(5)
+
+print(round(resultado, 2))
+```
+
+Python entrega el objeto como `self`; solo se proporciona el argumento `5`.
+
+## Varios objetos
+
+```{pyodide}
+conservadora = Inversion("Conservador", 1000, 0.03)
+agresiva = Inversion("Agresivo", 2000, 0.09)
+
+print(conservadora.capital_final(5))
+print(agresiva.capital_final(5))
+```
+
+Modificar un objeto no cambia los demás:
+
+```{pyodide}
+conservadora.capital_inicial = 1500
+```
+
+## Modificar el estado
+
+```{pyodide}
+class CuentaInversion:
+    def __init__(self, titular, saldo=0):
+        self.titular = titular
+        self.saldo = saldo
+
+    def depositar(self, monto):
+        if monto > 0:
+            self.saldo = self.saldo + monto
+
+
+cuenta = CuentaInversion("Michael Scott", 1000)
+cuenta.depositar(500)
+print(cuenta.saldo)
+```
+
+El objeto conserva el nuevo estado.
+
+## Errores comunes con clases
+
+- Olvidar `self` en un método.
+- Confundir la clase con un objeto.
+- Usar un atributo no inicializado.
+- Llamar un método sin paréntesis.
+- No respetar la indentación.
+
+# Cierre
+
+## Del dato al objeto
+
+El módulo construye una progresión:
+
+1. **Instrucciones y variables** guardan información.
+2. **Tipos y colecciones** representan datos.
+3. **Condicionales** toman decisiones.
+4. **Bucles** repiten procesos.
+5. **Funciones** organizan cálculos.
+6. **Clases** agrupan estado y comportamiento.
+
+## Ejemplo integrador
+
+```{pyodide}
+class Portafolio:
+    def __init__(self, posiciones):
+        self.posiciones = posiciones
+
+    def valor_total(self, precios):
+        total = 0
+
+        for ticker, cantidad in self.posiciones.items():
+            if ticker in precios:
+                total += cantidad * precios[ticker]
+
+        return total
+
+
+posiciones = {"AAPL": 10, "MSFT": 5}
+precios = {"AAPL": 125.75, "MSFT": 410.20}
+
+portafolio = Portafolio(posiciones)
+print(portafolio.valor_total(precios))
+```
+
+## Próximos pasos
+
+Con estos fundamentos ya es posible avanzar hacia:
+
+- lectura y limpieza de datos;
+- análisis con `pandas`;
+- cálculos numéricos con `numpy`;
+- visualización;
+- automatización de procesos financieros;
+- construcción de modelos más completos.
